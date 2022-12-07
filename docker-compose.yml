@@ -13,7 +13,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./wordpress:/var/www/html:delegated
+      - ./wordpress:/var/www/html
     depends_on:
       - php
       - mysql
@@ -21,7 +21,7 @@ services:
       - wordpress
 
   mysql:
-    image: mysql:5.7.29
+    image: mysql:latest
     container_name: mysql
     restart: always
     ports:
@@ -35,6 +35,8 @@ services:
       SERVICE_NAME: mysql
     networks:
       - wordpress
+    volumes:
+      - ./mysql:/var/lib/mysql
 
   php:
     build:
@@ -42,7 +44,7 @@ services:
       dockerfile: php.dockerfile
     container_name: php
     volumes:
-      - ./wordpress:/var/www/html:delegated
+      - ./wordpress:/var/www/html
     networks:
       - wordpress
 
@@ -53,6 +55,6 @@ services:
     container_name: wp
     entrypoint: ['wp', '--allow-root']
     volumes:
-      - ./wordpress:/var/www/html:delegated
+      - ./wordpress:/var/www/html
     networks:
       - wordpress
